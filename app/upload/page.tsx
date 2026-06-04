@@ -51,8 +51,9 @@ export default function UploadPage() {
 
       setStatus("Saving to database...");
 
-      if (data.paperId) {
-        window.location.href = `/papers/${data.paperId}`;
+      const paperId = data.paper?.id || data.paperId;
+      if (paperId) {
+        window.location.href = `/papers/${paperId}`;
         return;
       }
     } catch (error) {
