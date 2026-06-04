@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Paper {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  summary   String?
+  createdAt DateTime @default(now())
+
+  comparisonsA Comparison[] @relation("PaperA")
+  comparisonsB Comparison[] @relation("PaperB")
+}
+
+model Comparison {
+  id        String   @id @default(cuid())
+
+  paperAId  String
+  paperBId  String
+
+  paperA    Paper @relation("PaperA", fields: [paperAId], references: [id])
+  paperB    Paper @relation("PaperB", fields: [paperBId], references: [id])
+
+  result    String
+
+  createdAt DateTime @default(now())
+}
